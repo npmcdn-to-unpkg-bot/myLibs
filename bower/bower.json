@@ -19,6 +19,8 @@
     "ace-builds": "ace-build#^1.2.5",
     "jStorage": "^0.4.12",
     "animate.css": "^3.5.2",
-    "aws-sdk-php": "https://github.com/aws/aws-sdk-php.git#^3.19.1"
+    "aws-sdk-php": "https://github.com/aws/aws-sdk-php.git#^3.19.1",
+    "php-graph-sdk": "https://github.com/facebook/php-graph-sdk.git#^5.3.1",
+    "PayPal-PHP-SDK": "https://github.com/paypal/PayPal-PHP-SDK.git#^1.7.4"
   }
 }
