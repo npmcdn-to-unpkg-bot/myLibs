@@ -1,0 +1,26 @@
+{
+  "name": "bower",
+  "homepage": "https://github.com/Xuaning/myLibs",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "bootstrap": "^3.3.7",
+    "js-base64": "^2.1.9",
+    "ace-builds": "ace-build#^1.2.5",
+    "jStorage": "^0.4.12",
+    "animate.css": "^3.5.2"
+  }
+}
+
+
+
