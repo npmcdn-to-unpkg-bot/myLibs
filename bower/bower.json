@@ -22,6 +22,8 @@
     "aws-sdk-php": "https://github.com/aws/aws-sdk-php.git#^3.19.1",
     "php-graph-sdk": "https://github.com/facebook/php-graph-sdk.git#^5.3.1",
     "PayPal-PHP-SDK": "https://github.com/paypal/PayPal-PHP-SDK.git#^1.7.4",
-    "GeoIP2-php": "https://github.com/maxmind/GeoIP2-php.git#^2.4.2"
+    "GeoIP2-php": "https://github.com/maxmind/GeoIP2-php.git#^2.4.2",
+    "PHPExcel": "https://github.com/PHPOffice/PHPExcel.git#^1.8.1",
+    "PHP-MySQLi-Class": "https://github.com/getvivekv/PHP-MySQLi-Class.git#^1.5.1"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "PHP-MySQLi-Class",
+  "homepage": "https://github.com/getvivekv/PHP-MySQLi-Class",
+  "version": "1.5.1",
+  "_release": "1.5.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.5.1",
+    "commit": "bff0e709761127a144ddc230e452c4e80d26dff9"
+  },
+  "_source": "https://github.com/getvivekv/PHP-MySQLi-Class.git",
+  "_target": "^1.5.1",
+  "_originalSource": "https://github.com/getvivekv/PHP-MySQLi-Class.git",
+  "_direct": true
+}
