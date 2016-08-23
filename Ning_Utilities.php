@@ -15,9 +15,9 @@ class Ning_Utilities{
 	}
 	private function GeoIP($IP=''){
 		if($IP==''){$IP = $this -> getIP();}
-		require_once ($this -> _path.'/GeoIP2/autoload.php');
+		require_once ($this -> _path.'/bower/GeoIP2-php/vendor/autoload.php');
 		try{
-			$reader = new GeoIp2\Database\Reader($this -> _path.'/GeoIP2/GeoLite2-City.mmdb');
+			$reader = new GeoIp2\Database\Reader($this -> _path.'/GeoLite2-City.mmdb');
 			return $reader->city($IP);
 		}
 		catch(Exception $e) {
@@ -46,7 +46,7 @@ class Ning_Utilities{
         $this -> _AESKey = $key;
     }
 	public function dbConnect($credentialArray){
-		require_once ($this -> _path.'/Database.class.php');
+		require_once ($this -> _path.'/bower/PHP-MySQLi-Class/class.database.php');
 		return new Database($credentialArray[0],$credentialArray[1],$credentialArray[2],$credentialArray[3]);
 	}
 	public function getIP(){
@@ -166,7 +166,7 @@ class Ning_Utilities{
 		return json_decode($result) -> messages[0] -> status;
 	}
 	public function sendSES($to,$subject,$message,$credential,$file = ''){
-		require_once($this -> _path.'/AWS_SDK_V3/aws-autoloader.php');
+		require_once($this -> _path.'/aws-sdk-php/vendor/autoload.php');
 		$credential = new Aws\Credentials\Credentials($credential[0], $credential[1]);
 		if(empty($file)){
 			$client = SesClient::factory(array(
