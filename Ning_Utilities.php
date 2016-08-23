@@ -324,4 +324,7 @@ class Ning_Utilities{
 			array_splice($array, $key, 1);
 		return $array;
 	}
+	public function test(){
+		
+	}
 }
