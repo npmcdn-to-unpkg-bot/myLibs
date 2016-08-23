@@ -325,6 +325,6 @@ class Ning_Utilities{
 		return $array;
 	}
 	public function test(){
-		
+		echo 'test';		
 	}
 }
