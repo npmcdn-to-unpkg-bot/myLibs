@@ -5,7 +5,8 @@ use Aws\Ses\SesClient;
 * Ning Utilities
 */
 class Ning_Utilities{
-	private $_path;
+    private $_path;
+    private $_webRoot;
     private $_AESKey;
 
 	function __construct($contentType=''){
@@ -39,9 +40,12 @@ class Ning_Utilities{
 			die(curl_error($ch));
 		}
 	}
-	public function setPath($path){
-		$this -> _path = rtrim($path,'/');
-	}
+    public function setPath($path){
+        $this -> _path = rtrim($path,'/');
+    }
+    public function setWebRoot($path){
+        $this -> _webRoot = rtrim($path,'/');
+    }
     public function setAESKey($key){
         $this -> _AESKey = $key;
     }
@@ -324,7 +328,37 @@ class Ning_Utilities{
 			array_splice($array, $key, 1);
 		return $array;
 	}
-	public function test(){
-		echo 'test';
+	public function useMyLibs($items){
+        $html = '';
+        $_webRoot = $this -> _webRoot;
+        if(isset($items['js'])){
+            foreach ($items['js'] as $item){
+                switch ($item){
+                    case 'jquery':
+                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/jquery/dist/jquery.min.js\"></script>\n";
+                        break;
+                    case 'bootstrap':
+                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/bootstrap/dist/js/bootstrap.min.js\"></script>\n";
+                        break;
+                    case 'slicknav':
+                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/slicknav/dist/jquery.slicknav.min.js\"></script>\n";
+                        break;
+                }
+            }
+        }
+        if(isset($items['css'])){
+            foreach ($items['css'] as $item){
+                switch ($item){
+                    case 'font-awesome':
+                        $html .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/font-awesome/css/font-awesome.min.css\">\n";
+                        break;
+                    case 'animate.css':
+                        $html .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/animate.css/animate.min.css\">\n";
+                        break;
+                }
+            }
+        }
+
+        return $html;
 	}
 }

@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: normal;
+    font-weight: 100;
+    src: local('☺︎'), url("MyriadSetPro/MyriadSetPro-Ultralight.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: italic;
+    font-weight: 100;
+    src: local('☺︎'), url("MyriadSetPro/MyriadSetPro-UltralightItalic.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: normal;
+    font-weight: 500;
+    src: local('☺︎'), url("MyriadSetPro/MyriadSetPro-Thin.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: italic;
+    font-weight: 500;
+    src: local('☺︎'), url("MyriadSetPro/MyriadSetPro-ThinItalic.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: local('☺︎'), url("MyriadSetPro/MyriadSetPro-Semibold.ttf") format("truetype");
+}
+
+/** Ultra Light */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 100;
+    src: url("Sanfransicso/sanfranciscodisplay-ultralight-webfont.woff");
+}
+
+/** Thin */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 200;
+    src: url("Sanfransicso/sanfranciscodisplay-thin-webfont.woff");
+}
+
+/** Regular */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 400;
+    src: url("Sanfransicso/sanfranciscodisplay-regular-webfont.woff");
+}
+
+/** Medium */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 500;
+    src: url("Sanfransicso/sanfranciscodisplay-medium-webfont.woff");
+}
+
+/** Semi Bold */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 600;
+    src: url("Sanfransicso/sanfranciscodisplay-semibold-webfont.woff");
+}
+
+/** Bold */
+@font-face {
+    font-family: "San Francisco";
+    font-weight: 700;
+    src: url("Sanfransicso/sanfranciscodisplay-bold-webfont.woff");
+}
