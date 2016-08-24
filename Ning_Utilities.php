@@ -373,6 +373,9 @@ class Ning_Utilities{
                     case 'bootstrap':
                         $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/bootstrap/dist/css/bootstrap.min.css\">\n";
                         break;
+                    case 'slicknav':
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/slicknav/dist/slicknav.min.css\">\n";
+                        break;
                     case 'animate.css':
                         $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/animate.css/animate.min.css\">\n";
                         break;
