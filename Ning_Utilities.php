@@ -329,31 +329,55 @@ class Ning_Utilities{
 		return $array;
 	}
 	public function useMyLibs($items){
-        $html = '';
+        $html = "\n";
         $_webRoot = $this -> _webRoot;
         if(isset($items['js'])){
-            foreach ($items['js'] as $item){
+            foreach ($items['js'] as $key => $item){
+                reset($items['js']);
+                if ($key === key($items['js'])){
+                    $space = $item;
+                    $html .= "$space<!-- myLibs JS -->".PHP_EOL;
+                    continue;
+                }
                 switch ($item){
                     case 'jquery':
-                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/jquery/dist/jquery.min.js\"></script>\n";
+                        $html .= "$space<script src=\"$_webRoot/libs/myLibs/bower/jquery/dist/jquery.min.js\"></script>".PHP_EOL;
                         break;
                     case 'bootstrap':
-                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/bootstrap/dist/js/bootstrap.min.js\"></script>\n";
+                        $html .= "$space<script src=\"$_webRoot/libs/myLibs/bower/bootstrap/dist/js/bootstrap.min.js\"></script>".PHP_EOL;
                         break;
                     case 'slicknav':
-                        $html .= "<script src=\"$_webRoot/libs/myLibs/bower/slicknav/dist/jquery.slicknav.min.js\"></script>\n";
+                        $html .= "$space<script src=\"$_webRoot/libs/myLibs/bower/slicknav/dist/jquery.slicknav.min.js\"></script>".PHP_EOL;
+                        break;
+                    default:
+                        $html .= "$space<script src=\"$_webRoot/libs/js/$item.js\"></script>".PHP_EOL;
                         break;
                 }
             }
         }
         if(isset($items['css'])){
-            foreach ($items['css'] as $item){
+            foreach ($items['css'] as $key => $item){
+                reset($items['css']);
+                if ($key === key($items['css'])){
+                    $space = $item;
+                    $html .= "$space<!-- myLibs CSS -->".PHP_EOL;
+                    continue;
+                }
                 switch ($item){
+                    case 'fonts':
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/fonts/fonts.css\">\n";
+                        break;
                     case 'font-awesome':
-                        $html .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/font-awesome/css/font-awesome.min.css\">\n";
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/font-awesome/css/font-awesome.min.css\">\n";
+                        break;
+                    case 'bootstrap':
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/bootstrap/dist/css/bootstrap.min.css\">\n";
                         break;
                     case 'animate.css':
-                        $html .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/animate.css/animate.min.css\">\n";
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/myLibs/bower/animate.css/animate.min.css\">\n";
+                        break;
+                    default:
+                        $html .= "$space<link rel=\"stylesheet\" type=\"text/css\" href=\"$_webRoot/libs/css/$item.css\">\n";
                         break;
                 }
             }
