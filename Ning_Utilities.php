@@ -8,6 +8,7 @@ class Ning_Utilities{
     private $_path;
     private $_webRoot;
     private $_AESKey;
+
 	function __construct($contentType=''){
 		if($contentType == 'json'){
 			header("Content-Type: application/json; charset=UTF-8");
