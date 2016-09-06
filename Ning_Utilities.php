@@ -13,33 +13,6 @@ class Ning_Utilities{
 			header("Content-Type: application/json; charset=UTF-8");
 		}
 	}
-	private function GeoIP($IP=''){
-		if($IP==''){$IP = $this -> getIP();}
-		require_once ($this -> _path.'/bower/GeoIP2-php/vendor/autoload.php');
-		try{
-			$reader = new GeoIp2\Database\Reader($this -> _path.'/GeoLite2-City.mmdb');
-			return $reader->city($IP);
-		}
-		catch(Exception $e) {
-			return null;
-		}
-	}
-	private function USPS($xml) {
-		$ch = curl_init('http://production.shippingapis.com/ShippingAPI.dll');
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
-		$result = curl_exec($ch);
-		$error = curl_error($ch);
-		if(empty($error)) {
-			return $result;
-		}else{
-			die(curl_error($ch));
-		}
-	}
-
     /**
      * Setter
      */
@@ -59,6 +32,32 @@ class Ning_Utilities{
     /**
      * GEO Location
      */
+    private function GeoIP($IP=''){
+        if($IP==''){$IP = $this -> getIP();}
+        require_once ($this -> _path.'/bower/GeoIP2-php/vendor/autoload.php');
+        try{
+            $reader = new GeoIp2\Database\Reader($this -> _path.'/GeoLite2-City.mmdb');
+            return $reader->city($IP);
+        }
+        catch(Exception $e) {
+            return null;
+        }
+    }
+    private function USPS($xml) {
+        $ch = curl_init('http://production.shippingapis.com/ShippingAPI.dll');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+        $result = curl_exec($ch);
+        $error = curl_error($ch);
+        if(empty($error)) {
+            return $result;
+        }else{
+            die(curl_error($ch));
+        }
+    }
     public function getIP(){
 		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
 			$user_ip = $_SERVER['HTTP_CLIENT_IP'];
