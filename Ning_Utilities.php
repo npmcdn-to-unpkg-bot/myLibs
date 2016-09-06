@@ -41,6 +41,7 @@ class Ning_Utilities{
 			die(curl_error($ch));
 		}
 	}
+
     /**
      * Setter
      */
@@ -117,23 +118,17 @@ class Ning_Utilities{
         return array('verifiedCity'=>(string)($xml->ZipCode[0]->City),
             'verifiedState'=>(string)($xml->ZipCode[0]->State));
     }
-    public function getJsonOutput($array,$prettyPrint=false){
-        if($prettyPrint===true){
-            return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
-        }
-        return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+    public function getTimeZone($location_lat,$location_lng){
+        return json_decode(file_get_contents("http://api.geonames.org/timezoneJSON?lat=$location_lat&lng=$location_lng&username=zhengning"));
     }
-    public function getRandomToken($length = 8,$type = ''){
-        $token = "";
-        $codeAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet .= "0123456789";
-        if($type == 'int'){
-            $codeAlphabet = "0123456789";
-        }
-        for($i = 0; $i < $length; $i ++){
-            $token .= $codeAlphabet[$this -> cryptoRandSecure(0,strlen($codeAlphabet))];
-        }
-        return $token;
+    public function getMicroTime(){
+        date_default_timezone_set($this -> _timeZone);
+        list($usec, $sec) = explode(' ', microtime());
+        return ((float)$usec + (float)$sec);
+    }
+    public function getTimestamp(){
+        date_default_timezone_set($this -> _timeZone);
+        return time();
     }
     public function getAESEncrypt($content){
         if(!empty($this -> _AESKey) && !empty($content)){
@@ -155,6 +150,24 @@ class Ning_Utilities{
         }
         return null;
     }
+    public function getJsonOutput($array,$prettyPrint=false){
+        if($prettyPrint===true){
+            return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+        }
+        return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+    }
+    public function getRandomToken($length = 8,$type = ''){
+        $token = "";
+        $codeAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet .= "0123456789";
+        if($type == 'int'){
+            $codeAlphabet = "0123456789";
+        }
+        for($i = 0; $i < $length; $i ++){
+            $token .= $codeAlphabet[$this -> cryptoRandSecure(0,strlen($codeAlphabet))];
+        }
+        return $token;
+    }
     public function getCreditCardType($cardNumber){
         $cardNumber=preg_replace('/[^\d]/','',$cardNumber);
         if (preg_match('/^3[47][0-9]{13}$/',$cardNumber)) {
@@ -174,19 +187,7 @@ class Ning_Utilities{
         }
         return $cardType;
     }
-    public function getTimeZone($location_lat,$location_lng){
-        return json_decode(file_get_contents("http://api.geonames.org/timezoneJSON?lat=$location_lat&lng=$location_lng&username=zhengning"));
-    }
-    public function getMicroTime(){
-        date_default_timezone_set($this -> _timeZone);
-        list($usec, $sec) = explode(' ', microtime());
-        return ((float)$usec + (float)$sec);
-    }
-    public function getTimestamp(){
-        date_default_timezone_set($this -> _timeZone);
-        return time();
-    }
-    
+
     public function useMyLibs($items){
         $html = "\n";
         $_webRoot = $this -> _webRoot;
