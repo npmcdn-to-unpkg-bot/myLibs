@@ -186,6 +186,46 @@ class Ning_Utilities{
         return $cardType;
     }
 
+    /**
+     * Array
+     */
+    public function arraySorting($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC){
+        if(is_array($arrays)){
+            foreach ($arrays as $array){
+                if(is_array($array)){
+                    $key_arrays[] = $array[$sort_key];
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
+        return $arrays;
+    }
+    public function arrayUnique2D($array2D){
+        $temp = $res = array();
+        foreach ($array2D as $v){
+            $v = json_encode($v);
+            $temp[] = $v;
+        }
+        $temp = array_unique($temp);
+        foreach ($temp as $item){
+            $res[] = json_decode($item,true);
+        }
+        return $res;
+    }
+    public function removeElementArray($array,$element){
+        $key = array_search($element, $array);
+        if ($key !== false)
+            array_splice($array, $key, 1);
+        return $array;
+    }
+
+    /**
+     * Send Message
+     */
     public function sendSMS($to,$text){
         $text=rawurlencode($text);
         $options = array(
@@ -255,6 +295,26 @@ class Ning_Utilities{
         }
         return $result;
     }
+
+    /**
+     * Http Request
+     */
+    public function httpGetRequest($url){
+        return json_decode(file_get_contents($url));
+    }
+    public function httpPostRequest($url,$data,$header=array()){
+        $data = http_build_query($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response);
+    }
+
     public function useMyLibs($items){
         $html = "\n";
         $_webRoot = $this -> _webRoot;
@@ -319,54 +379,6 @@ class Ning_Utilities{
         require_once ($this -> _path.'/bower/PHP-MySQLi-Class/class.database.php');
         return new Database($credentialArray[0],$credentialArray[1],$credentialArray[2],$credentialArray[3]);
     }
-    public function arraySorting($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC){
-        if(is_array($arrays)){
-            foreach ($arrays as $array){
-                if(is_array($array)){
-                    $key_arrays[] = $array[$sort_key];
-                }else{
-                    return false;
-                }
-            }
-        }else{
-            return false;
-        }
-        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
-        return $arrays;
-    }
-    public function arrayUnique2D($array2D){
-        $temp = $res = array();
-        foreach ($array2D as $v){
-            $v = json_encode($v);
-            $temp[] = $v;
-        }
-        $temp = array_unique($temp);
-        foreach ($temp as $item){
-            $res[] = json_decode($item,true);
-        }
-        return $res;
-    }
-    public function removeElementArray($array,$element){
-        $key = array_search($element, $array);
-        if ($key !== false)
-            array_splice($array, $key, 1);
-        return $array;
-    }
-    public function httpGetRequest($url){
-		return json_decode(file_get_contents($url));
-	}
-	public function httpPostRequest($url,$data,$header=array()){
-		$data = http_build_query($data);
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		$response = curl_exec($ch);
-		curl_close($ch);
-		return json_decode($response);
-	}
 	public function cryptoRandSecure($min, $max) {
 		$range = $max - $min;
 		if ($range < 0) return $min;
