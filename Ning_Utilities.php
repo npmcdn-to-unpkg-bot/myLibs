@@ -8,7 +8,7 @@ class Ning_Utilities{
     private $_AESKey;
 	private $_timeZone;
 
-	function __construct($contentType=''){
+	function __construct($contentType = ''){
 		if($contentType == 'json'){
 			header("Content-Type: application/json; charset=UTF-8");
 		}
@@ -32,7 +32,7 @@ class Ning_Utilities{
     /**
      * GEO Location
      */
-    private function GeoIP($IP=''){
+    private function GeoIP($IP = ''){
         if($IP==''){$IP = $this -> getIP();}
         require_once ($this -> _path.'/bower/GeoIP2-php/vendor/autoload.php');
         try{
@@ -70,15 +70,15 @@ class Ning_Utilities{
 		}
 		return $user_ip;
 	}
-    public function getCountryIsoCode_GeoIP($IP=''){
+    public function getCountryIsoCode_GeoIP($IP = ''){
         if($IP==''){$IP = $this -> getIP();}
         return strtolower($this -> GeoIP($IP)->country->isoCode);
     }
-    public function getCountryName_GeoIP($IP=''){
+    public function getCountryName_GeoIP($IP = ''){
         if($IP==''){$IP = $this -> getIP();}
         return $this->GeoIP($IP)->country->names['en'];
     }
-    public function getCityName_GeoIP($IP=''){
+    public function getCityName_GeoIP($IP = ''){
         if($IP==''){$IP = $this -> getIP();}
         return $this->GeoIP($IP)->city->names['en'];
     }
@@ -131,7 +131,7 @@ class Ning_Utilities{
     /**
      * Array
      */
-    public function arraySorting($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC){
+    public function arraySorting($arrays,$sort_key,$sort_order = SORT_ASC,$sort_type = SORT_NUMERIC){
         if(is_array($arrays)){
             foreach ($arrays as $array){
                 if(is_array($array)){
@@ -244,7 +244,7 @@ class Ning_Utilities{
     public function httpGetRequest($url){
         return json_decode(file_get_contents($url));
     }
-    public function httpPostRequest($url,$data,$header=array()){
+    public function httpPostRequest($url,$data,$header = array()){
         $data = http_build_query($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -370,7 +370,7 @@ class Ning_Utilities{
         require_once ($this -> _path.'/bower/PHP-MySQLi-Class/class.database.php');
         return new Database($credentialArray[0],$credentialArray[1],$credentialArray[2],$credentialArray[3]);
     }
-    public function zhTW2zhCN($article,$reverse=0,$counts=0){
+    public function zhTW2zhCN($article,$reverse = 0,$counts = 0){
 		if (preg_match("/[\x7f-\xff]/", $article)) {
 			$rawArticle=$article;
 			$zh_TW = '一錒皚藹礙愛翱襖奧壩罷擺敗頒辦絆幫綁鎊謗剝飽寶報鮑輩貝鋇狽備憊繃筆畢斃閉邊編貶變辯辮鱉癟瀕濱賓擯餅撥缽鉑駁蔔補參蠶殘慚慘燦蒼艙倉滄廁側冊測層詫攙摻蟬饞讒纏鏟產闡顫場嘗長償腸廠暢鈔車徹塵陳襯撐稱懲誠騁痴遲馳恥齒熾衝蟲寵疇躊籌綢醜櫥廚鋤雛礎儲觸處傳瘡闖創錘純綽辭詞賜聰蔥囪從叢湊竄錯達帶貸擔單鄲撣膽憚誕彈當擋黨蕩檔搗島禱導盜燈鄧敵滌遞締點墊電澱釣調迭諜疊釘頂錠訂東動棟凍鬥犢獨讀賭鍍鍛斷緞兌隊對噸頓鈍奪鵝額訛惡餓兒爾餌貳發罰閥琺礬釩煩範販飯訪紡飛廢費紛墳奮憤糞豐楓鋒風瘋馮縫諷鳳膚輻撫輔賦復負訃婦縛該鈣蓋干趕稈贛岡剛鋼綱崗皋鎬擱鴿閣鉻個給龔宮鞏貢鉤溝構購夠蠱顧剮關觀館慣貫廣規硅歸龜閨軌詭櫃貴劊輥滾鍋國過駭韓漢閡鶴賀橫轟鴻紅後壺護滬戶嘩華畫劃話懷壞歡環還緩換喚瘓煥渙黃謊揮輝毀賄穢會燴彙諱誨繪葷渾伙獲貨禍擊機積飢譏雞績緝極輯級擠幾薊劑濟計記際繼紀夾莢頰賈鉀價駕殲監堅箋間艱緘繭檢堿鹼揀撿簡儉減薦檻鑒踐賤見鍵艦劍餞漸濺澗漿蔣槳獎講醬膠澆驕嬌攪鉸矯僥腳餃繳絞轎較秸階節莖驚經頸靜鏡徑痙競淨糾廄舊駒舉據鋸懼劇鵑絹傑潔結誡屆緊錦僅謹進晉燼盡勁荊覺決訣絕鈞軍駿開凱顆殼課墾懇摳庫褲誇塊儈寬礦曠況虧巋窺饋潰擴闊蠟腊萊來賴藍欄攔籃闌蘭瀾讕攬覽懶纜爛濫撈勞澇樂鐳壘類淚籬離裡鯉禮麗厲勵礫歷瀝隸倆聯蓮連鐮憐漣簾斂臉鏈戀煉練糧涼兩輛諒療遼鐐獵臨鄰鱗凜賃齡鈴凌靈嶺領餾劉龍聾嚨籠壟攏隴樓婁摟簍蘆盧顱廬爐擄鹵虜魯賂祿錄陸驢呂鋁侶屢縷慮濾綠巒攣孿灤亂掄輪倫侖淪綸論蘿羅邏鑼籮騾駱絡媽瑪碼螞馬罵嗎買麥賣邁脈瞞饅蠻滿謾貓錨鉚貿麼霉沒鎂門悶們錳夢謎彌覓綿緬廟滅憫閩鳴銘謬謀畝鈉納難撓腦惱鬧餒膩攆捻釀鳥聶囓鑷鎳檸獰寧擰濘鈕紐膿濃農瘧諾歐鷗毆嘔漚盤龐國愛賠噴鵬騙飄頻貧蘋憑評潑頗撲鋪樸譜臍齊騎豈啟氣棄訖牽扦钎鉛遷簽謙錢鉗潛淺譴塹槍嗆牆薔強搶鍬橋喬僑翹竅竊欽親輕氫傾頃請慶瓊窮趨區軀驅齲顴權勸卻鵲讓饒擾繞熱韌認紉榮絨軟銳閏潤灑薩鰓賽傘喪騷掃澀殺紗篩曬閃陝贍繕傷賞燒紹賒攝懾設紳審嬸腎滲聲繩勝聖師獅濕詩屍時蝕實識駛勢釋飾視試壽獸樞輸書贖屬術樹豎數帥雙誰稅順說碩爍絲飼聳慫頌訟誦擻蘇訴肅雖綏歲孫損筍縮瑣鎖獺撻抬攤貪癱灘壇譚談嘆湯燙濤絛騰謄銻題體屜條貼鐵廳聽烴銅統頭圖塗團頹蛻脫鴕馱駝橢窪襪彎灣頑萬網韋違圍為濰維葦偉偽緯謂衛溫聞紋穩問甕撾蝸渦窩嗚鎢烏誣無蕪吳塢霧務誤錫犧襲習銑戲細蝦轄峽俠狹廈锨鮮纖鹹賢銜閑顯險現獻縣餡羨憲線廂鑲鄉詳響項蕭銷曉嘯蠍協挾攜脅諧寫瀉謝鋅釁興洶鏽繡虛噓須許緒續軒懸選癬絢學勛詢尋馴訓訊遜壓鴉鴨啞亞訝閹煙鹽嚴顏閻艷厭硯彥諺驗鴦楊揚瘍陽癢養樣瑤搖堯遙窯謠藥爺頁業葉醫銥頤遺儀彝蟻藝億憶義詣議誼譯異繹蔭陰銀飲櫻嬰鷹應纓瑩螢營熒蠅穎喲擁佣癰踊詠湧優憂郵鈾猶游誘輿魚漁娛與嶼語吁御獄譽預馭鴛淵轅園員圓緣遠願約躍鑰岳粵悅閱雲鄖勻隕運蘊醞暈韻雜災載攢暫贊贓髒鑿棗灶責擇則澤賊贈扎札軋鍘閘詐齋債氈盞斬輾嶄棧戰綻張漲帳賬脹趙蟄轍鍺這貞針偵診鎮陣掙睜猙幀鄭證織職執紙摯擲幟質鐘終種腫眾謅軸皺晝驟豬諸誅燭矚囑貯鑄築駐專磚轉賺樁莊裝妝壯狀錐贅墜綴諄濁茲資漬蹤綜總縱鄒詛組鑽致鐘麼為只凶准啟板裡靂余鏈泄';
@@ -389,12 +389,12 @@ class Ning_Utilities{
 				}
 			}
 			if(($article==$rawArticle)&&($counts<2)){
-				return $this -> zh_TW_zh_CN($article,1,$counts+1);
+				return $this -> zhTW2zhCN($article,1,$counts+1);
 			}
 		}
 		return $article;
 	}
-    public function getJsonOutput($array,$prettyPrint=false){
+    public function getJsonOutput($array,$prettyPrint = false){
         if($prettyPrint===true){
             return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
         }
