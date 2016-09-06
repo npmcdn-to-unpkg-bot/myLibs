@@ -1,6 +1,4 @@
 <?php
-use Aws\Ses\SesClient;
-
 /**
 * Ning Utilities
 */
@@ -188,6 +186,75 @@ class Ning_Utilities{
         return $cardType;
     }
 
+    public function sendSMS($to,$text){
+        $text=rawurlencode($text);
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => "api_key=04a638c3&api_secret=0c412fd7&from=17022000701&to=$to&text=$text&type=unicode",
+            ),
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents('https://rest.nexmo.com/sms/json', false, $context);
+        return json_decode($result) -> messages[0] -> status;
+    }
+    public function sendSES($to,$subject,$message,$credential,$file = ''){
+        require_once($this -> _path.'/aws-sdk-php/vendor/autoload.php');
+        $credential = new Aws\Credentials\Credentials($credential[0], $credential[1]);
+        if(empty($file)){
+            $client = Aws\Ses\SesClient::factory(array(
+                'version' => 'latest',
+                'credentials' => $credential,
+                'region'  => 'us-west-2'
+            ));
+            $result = true;
+            try{
+                $client -> sendEmail(array(
+                    'Source' => "All & IN <no-reply@allandin.com>",
+                    'Destination' => array(
+                        'ToAddresses' => array($to),
+                    ),
+                    'Message' => array(
+                        'Subject' => array(
+                            'Data' => $subject,
+                            'Charset' => 'UTF-8',
+                        ),
+                        'Body' => array(
+                            'Text' => array(
+                                'Data' => $message,
+                                'Charset' => 'UTF-8',
+                            ),
+                            'Html' => array(
+                                'Data' => $message,
+                                'Charset' => 'UTF-8',
+                            ),
+                        ),
+                    ),
+                ));
+
+            }
+            catch (Exception $e) {
+                $result = false;
+            }
+        }
+        else{
+            include_once("/var/www/libs/php_class/SESUtils.php");
+            $result = SESUtils::sendMail(array(
+                "to" => $to,
+                "subject" => $subject,
+                "message" => $message,
+                "from" => "no-reply@letsparty.me",
+                "files" => array(
+                    1 => array(
+                        "name" => "Invoice.pdf",
+                        "filepath" => $file,
+                        "mime" => "application/pdf"
+                    ))
+            ));
+        }
+        return $result;
+    }
     public function useMyLibs($items){
         $html = "\n";
         $_webRoot = $this -> _webRoot;
@@ -252,6 +319,39 @@ class Ning_Utilities{
         require_once ($this -> _path.'/bower/PHP-MySQLi-Class/class.database.php');
         return new Database($credentialArray[0],$credentialArray[1],$credentialArray[2],$credentialArray[3]);
     }
+    public function arraySorting($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC){
+        if(is_array($arrays)){
+            foreach ($arrays as $array){
+                if(is_array($array)){
+                    $key_arrays[] = $array[$sort_key];
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
+        return $arrays;
+    }
+    public function arrayUnique2D($array2D){
+        $temp = $res = array();
+        foreach ($array2D as $v){
+            $v = json_encode($v);
+            $temp[] = $v;
+        }
+        $temp = array_unique($temp);
+        foreach ($temp as $item){
+            $res[] = json_decode($item,true);
+        }
+        return $res;
+    }
+    public function removeElementArray($array,$element){
+        $key = array_search($element, $array);
+        if ($key !== false)
+            array_splice($array, $key, 1);
+        return $array;
+    }
     public function httpGetRequest($url){
 		return json_decode(file_get_contents($url));
 	}
@@ -280,108 +380,6 @@ class Ning_Utilities{
 		} while ($rnd >= $range);
 		return $min + $rnd;
 	}
-	public function sendSMS($to,$text){
-		$text=rawurlencode($text);
-		$options = array(
-			'http' => array(
-				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-				'method'  => 'POST',
-				'content' => "api_key=04a638c3&api_secret=0c412fd7&from=17022000701&to=$to&text=$text&type=unicode",
-			),
-		);
-		$context  = stream_context_create($options);
-		$result = file_get_contents('https://rest.nexmo.com/sms/json', false, $context);
-		return json_decode($result) -> messages[0] -> status;
-	}
-	public function sendSES($to,$subject,$message,$credential,$file = ''){
-		require_once($this -> _path.'/aws-sdk-php/vendor/autoload.php');
-		$credential = new Aws\Credentials\Credentials($credential[0], $credential[1]);
-		if(empty($file)){
-			$client = SesClient::factory(array(
-				'version' => 'latest',
-				'credentials' => $credential,
-				'region'  => 'us-west-2'
-			));
-			$result = true;
-			try{
-				$client -> sendEmail(array(
-					'Source' => "All & IN <no-reply@allandin.com>",
-					'Destination' => array(
-						'ToAddresses' => array($to),
-					),
-					'Message' => array(
-						'Subject' => array(
-							'Data' => $subject,
-							'Charset' => 'UTF-8',
-						),
-						'Body' => array(
-							'Text' => array(
-								'Data' => $message,
-								'Charset' => 'UTF-8',
-							),
-							'Html' => array(
-								'Data' => $message,
-								'Charset' => 'UTF-8',
-							),
-						),
-					),
-				));
-
-			}
-			catch (Exception $e) {
-				$result = false;
-			}
-		}
-		else{
-			include_once("/var/www/libs/php_class/SESUtils.php");
-			$result = SESUtils::sendMail(array(
-				"to" => $to,
-				"subject" => $subject,
-				"message" => $message,
-				"from" => "no-reply@letsparty.me",
-				"files" => array(
-					1 => array(
-						"name" => "Invoice.pdf",
-						"filepath" => $file,
-						"mime" => "application/pdf"
-					))
-			));
-		}
-		return $result;
-	}
-	public function arraySorting($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC){
-		if(is_array($arrays)){
-			foreach ($arrays as $array){
-				if(is_array($array)){
-					$key_arrays[] = $array[$sort_key];
-				}else{
-					return false;
-				}
-			}
-		}else{
-			return false;
-		}
-		array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
-		return $arrays;
-	}
-	public function arrayUnique2D($array2D){
-		$temp = $res = array();
-		foreach ($array2D as $v){
-			$v = json_encode($v);
-			$temp[] = $v;
-		}
-		$temp = array_unique($temp);
-		foreach ($temp as $item){
-			$res[] = json_decode($item,true);
-		}
-		return $res;
-	}
-    public function removeElementArray($array,$element){
-        $key = array_search($element, $array);
-        if ($key !== false)
-            array_splice($array, $key, 1);
-        return $array;
-    }
     public function zhTW2zhCN($article,$reverse=0,$counts=0){
 		if (preg_match("/[\x7f-\xff]/", $article)) {
 			$rawArticle=$article;
