@@ -49,15 +49,15 @@ class Ning_Utilities{
 	public function setWebRoot($path){
 		$this -> _webRoot = rtrim($path,'/');
 	}
-	public function setTimeZone($timeZone){
-		$this -> _timeZone = $timeZone;
-	}
     public function setAESKey($key){
         $this -> _AESKey = $key;
     }
+    public function setTimeZone($timeZone){
+        $this -> _timeZone = $timeZone;
+    }
 
     /**
-     * Getter
+     * GEO Location
      */
     public function getIP(){
 		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
@@ -127,63 +127,6 @@ class Ning_Utilities{
     public function getTimestamp(){
         date_default_timezone_set($this -> _timeZone);
         return time();
-    }
-    public function getAESEncrypt($content){
-        if(!empty($this -> _AESKey) && !empty($content)){
-            require_once ($this -> _path.'/AES.class.php');
-            $AES = new CryptAES();
-            $AES -> set_key($this -> _AESKey);
-            $AES -> require_pkcs5();
-            return $AES -> encrypt($content);
-        }
-        return null;
-    }
-    public function getAESDecrypt($content){
-        if(!empty($this -> _AESKey) && !empty($content)){
-            require_once ($this -> _path.'/AES.class.php');
-            $AES = new CryptAES();
-            $AES -> set_key($this -> _AESKey);
-            $AES -> require_pkcs5();
-            return $AES -> decrypt($content);
-        }
-        return null;
-    }
-    public function getJsonOutput($array,$prettyPrint=false){
-        if($prettyPrint===true){
-            return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
-        }
-        return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-    }
-    public function getRandomToken($length = 8,$type = ''){
-        $token = "";
-        $codeAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet .= "0123456789";
-        if($type == 'int'){
-            $codeAlphabet = "0123456789";
-        }
-        for($i = 0; $i < $length; $i ++){
-            $token .= $codeAlphabet[$this -> cryptoRandSecure(0,strlen($codeAlphabet))];
-        }
-        return $token;
-    }
-    public function getCreditCardType($cardNumber){
-        $cardNumber=preg_replace('/[^\d]/','',$cardNumber);
-        if (preg_match('/^3[47][0-9]{13}$/',$cardNumber)) {
-            $cardType = 'amex';
-        }
-        elseif (preg_match('/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/',$cardNumber)) {
-            $cardType = 'Diners Club';
-        }
-        elseif (preg_match('/^6(?:011|5[0-9][0-9])[0-9]{12}$/',$cardNumber)) {
-            $cardType = 'discover';
-        }
-        elseif (preg_match('/^5[1-5][0-9]{14}$/',$cardNumber)) {
-            $cardType = 'mastercard';
-        }
-        elseif (preg_match('/^4[0-9]{12}(?:[0-9]{3})?$/',$cardNumber)) {
-            $cardType = 'visa';
-        }
-        return $cardType;
     }
 
     /**
@@ -315,6 +258,55 @@ class Ning_Utilities{
         return json_decode($response);
     }
 
+    /**
+     * Encryption
+     */
+    public function getRandomToken($length = 8,$type = ''){
+        $token = "";
+        $codeAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet .= "0123456789";
+        if($type == 'int'){
+            $codeAlphabet = "0123456789";
+        }
+        for($i = 0; $i < $length; $i ++){
+            $token .= $codeAlphabet[$this -> cryptoRandSecure(0,strlen($codeAlphabet))];
+        }
+        return $token;
+    }
+    public function cryptoRandSecure($min, $max) {
+        $range = $max - $min;
+        if ($range < 0) return $min;
+        $log = log($range, 2);
+        $bytes = (int) ($log / 8) + 1;
+        $bits = (int) $log + 1;
+        $filter = (int) (1 << $bits) - 1;
+        do {
+            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+            $rnd = $rnd & $filter;
+        } while ($rnd >= $range);
+        return $min + $rnd;
+    }
+    public function getAESEncrypt($content){
+        if(!empty($this -> _AESKey) && !empty($content)){
+            require_once ($this -> _path.'/AES.class.php');
+            $AES = new CryptAES();
+            $AES -> set_key($this -> _AESKey);
+            $AES -> require_pkcs5();
+            return $AES -> encrypt($content);
+        }
+        return null;
+    }
+    public function getAESDecrypt($content){
+        if(!empty($this -> _AESKey) && !empty($content)){
+            require_once ($this -> _path.'/AES.class.php');
+            $AES = new CryptAES();
+            $AES -> set_key($this -> _AESKey);
+            $AES -> require_pkcs5();
+            return $AES -> decrypt($content);
+        }
+        return null;
+    }
+
     public function useMyLibs($items){
         $html = "\n";
         $_webRoot = $this -> _webRoot;
@@ -379,19 +371,6 @@ class Ning_Utilities{
         require_once ($this -> _path.'/bower/PHP-MySQLi-Class/class.database.php');
         return new Database($credentialArray[0],$credentialArray[1],$credentialArray[2],$credentialArray[3]);
     }
-	public function cryptoRandSecure($min, $max) {
-		$range = $max - $min;
-		if ($range < 0) return $min;
-		$log = log($range, 2);
-		$bytes = (int) ($log / 8) + 1;
-		$bits = (int) $log + 1;
-		$filter = (int) (1 << $bits) - 1;
-		do {
-			$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-			$rnd = $rnd & $filter;
-		} while ($rnd >= $range);
-		return $min + $rnd;
-	}
     public function zhTW2zhCN($article,$reverse=0,$counts=0){
 		if (preg_match("/[\x7f-\xff]/", $article)) {
 			$rawArticle=$article;
@@ -416,4 +395,29 @@ class Ning_Utilities{
 		}
 		return $article;
 	}
+    public function getJsonOutput($array,$prettyPrint=false){
+        if($prettyPrint===true){
+            return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+        }
+        return json_encode($array,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+    }
+    public function getCreditCardType($cardNumber){
+        $cardNumber=preg_replace('/[^\d]/','',$cardNumber);
+        if (preg_match('/^3[47][0-9]{13}$/',$cardNumber)) {
+            $cardType = 'amex';
+        }
+        elseif (preg_match('/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/',$cardNumber)) {
+            $cardType = 'Diners Club';
+        }
+        elseif (preg_match('/^6(?:011|5[0-9][0-9])[0-9]{12}$/',$cardNumber)) {
+            $cardType = 'discover';
+        }
+        elseif (preg_match('/^5[1-5][0-9]{14}$/',$cardNumber)) {
+            $cardType = 'mastercard';
+        }
+        elseif (preg_match('/^4[0-9]{12}(?:[0-9]{3})?$/',$cardNumber)) {
+            $cardType = 'visa';
+        }
+        return $cardType;
+    }
 }
