@@ -1,12 +1,12 @@
 {
   "name": "aws-sdk-php",
   "homepage": "https://github.com/aws/aws-sdk-php",
-  "version": "3.19.3",
-  "_release": "3.19.3",
+  "version": "3.19.4",
+  "_release": "3.19.4",
   "_resolution": {
     "type": "version",
-    "tag": "3.19.3",
-    "commit": "da9a82d92611f46a2ef81960ff4b9a2e8fe9d563"
+    "tag": "3.19.4",
+    "commit": "65cd42265bfb688bf8514af70046ce05d72429ba"
   },
   "_source": "https://github.com/aws/aws-sdk-php.git",
   "_target": "^3.19.1",
