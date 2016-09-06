@@ -8,6 +8,7 @@ class Ning_Utilities{
     private $_path;
     private $_webRoot;
     private $_AESKey;
+	private $_timeZone;
 
 	function __construct($contentType=''){
 		if($contentType == 'json'){
@@ -43,9 +44,12 @@ class Ning_Utilities{
     public function setPath($path){
         $this -> _path = rtrim($path,'/');
     }
-    public function setWebRoot($path){
-        $this -> _webRoot = rtrim($path,'/');
-    }
+	public function setWebRoot($path){
+		$this -> _webRoot = rtrim($path,'/');
+	}
+	public function setTimeZone($timeZone){
+		$this -> _timeZone = $timeZone;
+	}
     public function setAESKey($key){
         $this -> _AESKey = $key;
     }
@@ -319,8 +323,13 @@ class Ning_Utilities{
 		return json_decode(file_get_contents("http://api.geonames.org/timezoneJSON?lat=$location_lat&lng=$location_lng&username=zhengning"));
 	}
 	public function getMicroTime(){
+		date_default_timezone_set($this -> _timeZone);
 		list($usec, $sec) = explode(' ', microtime());
 		return ((float)$usec + (float)$sec);
+	}
+	public  function getTimestamp(){
+		date_default_timezone_set($this -> _timeZone);
+		return time();
 	}
 	public function removeElementArray($array,$element){
 		$key = array_search($element, $array);
