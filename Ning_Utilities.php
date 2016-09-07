@@ -70,6 +70,9 @@ class Ning_Utilities{
 		}
 		return $user_ip;
 	}
+    public function isPrivateIP($ip) {
+        return !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+    }
     public function getCountryIsoCode_GeoIP($IP = ''){
         if($IP==''){$IP = $this -> getIP();}
         return strtolower($this -> GeoIP($IP)->country->isoCode);
@@ -326,6 +329,9 @@ class Ning_Utilities{
                         break;
                     case 'slicknav':
                         $html .= "$space<script src=\"$_webRoot/libs/myLibs/bower/slicknav/dist/jquery.slicknav.min.js\"></script>".PHP_EOL;
+                        break;
+                    case 'isotope':
+                        $html .= "$space<script src=\"$_webRoot/libs/myLibs/bower/isotope/dist/isotope.pkgd.min.js\"></script>".PHP_EOL;
                         break;
                     default:
                         $html .= "$space<script src=\"$_webRoot/libs/js/$item.js\"></script>".PHP_EOL;
